@@ -2,6 +2,50 @@
     xmlns:mvc="sap.ui.core.mvc" displayBlock="true"
     xmlns="sap.m">
     <Page id="page" title="{i18n>title}">
-        <content />
+        <content>
+
+            <Table id="main_table_books" headerText="{i18n>main.tableHeader}" items="{/ZRAP_CV_BOOKS}"
+                growing="true" growingThreshold="200" alternateRowColors="true">
+	            <columns>
+                    <Column id="main_column_isbn">
+                        <Text id="main_text_isbn" text="{i18n>main.isbn}"/>
+                    </Column>
+                    <Column id="main_column_title">
+                        <Text id="main_text_title" text="{i18n>main.title}"/>
+                    </Column>
+                    <Column id="main_column_genre">
+                        <Text id="main_text_genre" text="{i18n>main.genre}" />
+                    </Column>
+                    <Column id="main_column_author">
+                        <Text id="main_text_author" text="{i18n>main.author}"/>
+                    </Column>
+                    <Column id="main_column_date">
+                        <Text id="main_text_date" text="{i18n>main.date}"/>
+                    </Column>
+                    <Column id="main_column_rating">
+                        <Text id="main_text_rating" text="{i18n>main.rating}"/>
+                    </Column>
+                </columns>
+                <items>
+                    <ColumnListItem id="main_listitem_template" press="onNavToDetail" type="Navigation"
+                        highlight="{path: 'Rating', formatter: '.ratingStateFormatter'}">
+                        <cells>
+                            <Text id="main_text_isbntemplate" text="{ISBN}"/>
+                            <Text id="main_text_titletemplate" text="{Title}"/>
+                            <Text id="main_text_genretemplate" text="{Genre}"/>
+                            <Text id="main_text_authortemplate" text="{Author}"/>
+                            <Text id="main_text_datetemplate" text="{PurchasingDate}"/>
+                            <ObjectStatus id="main_text_ratingtemplate"
+                                text="{Rating}"
+                                state="{path: 'Rating', formatter: '.ratingStateFormatter'}"
+                                icon="{path: 'Rating', formatter: '.ratingIconFormatter'}" />
+
+                            <!-- <Text id="main_text_ratingtemplate" text="{Rating}"/> -->
+                        </cells>
+                    </ColumnListItem>
+                </items>
+            </Table>
+
+        </content>
     </Page>
 </mvc:View>

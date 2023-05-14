@@ -1,0 +1,24 @@
+<core:FragmentDefinition  xmlns:f="sap.ui.layout.form" xmlns="sap.m" xmlns:core="sap.ui.core">
+                <f:SimpleForm id="detail_simpleform" editable="true" layout="ResponsiveGridLayout" labelSpanXL="3" labelSpanL="3"
+    labelSpanM="3" labelSpanS="12" emptySpanXL="4" emptySpanL="4" emptySpanM="4" emptySpanS="0" columnsXL="1"
+    columnsL="1" columnsM="1">
+    <f:content>
+        <Label id="detail_label_isbn" text="{i18n>detail.isbn}" />
+        <Text id="detail_text_isbn" text="{ISBN}" />
+        <Label id="detail_label_title" text="{i18n>detail.title}" />
+        <Text id="detail_text_title" text="{Title}" />
+        <Label id="detail_label_desc" text="{i18n>detail.desc}" />
+        <Text id="detail_text_desc" text="{Description}" />
+        <Label id="detail_label_genre" text="{i18n>detail.genre}" />
+        <Text id="detail_text_genre" text="{Genre}" />
+        <Label id="detail_label_author" text="{i18n>detail.author}" />
+        <Text id="detail_text_author" text="{Author}" />
+        <Label id="detail_label_pages" text="{i18n>detail.pages}" />
+        <Text id="detail_text_pages" text="{BookPages}" />
+        <Label id="detail_label_rating" text="{i18n>detail.rating}" />
+        <RatingIndicator id="detail_text_rating" value="{Rating}" editable="false" />
+        <Label id="detail_label_finished" text="{i18n>detail.finished}" />
+        <CheckBox id="detail_text_finished" selected="{ReadingFinished}" editable="false" />
+    </f:content>
+</f:SimpleForm>
+</core:FragmentDefinition>

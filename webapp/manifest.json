@@ -104,6 +104,13 @@
           "target": [
             "TargetMain"
           ]
+        },
+        {
+          "name": "Detail",
+          "pattern": "mandatoyParamDetail/{path}",
+          "target": [
+              "Detail"
+          ]
         }
       ],
       "targets": {
@@ -113,6 +120,13 @@
           "clearControlAggregation": false,
           "viewId": "Main",
           "viewName": "Main"
+        },
+        "Detail": {
+          "viewType": "XML",
+          "transition": "slide",
+          "clearControlAggregation": false,
+          "viewId": "Detail",
+          "viewName": "Detail"
         }
       }
     },
