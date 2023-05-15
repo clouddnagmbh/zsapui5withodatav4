@@ -27,7 +27,8 @@ sap.ui.define([
             onPatternMatched: function(oEvent) {
                 let oArguments = oEvent.getParameters().arguments,
                     sPath = decodeURIComponent(oArguments.path);
-                this.getView().bindElement(sPath);
+
+                this.getView().bindContext(sPath);
             },
 
             onEditPressed: function(){
