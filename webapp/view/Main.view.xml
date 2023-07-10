@@ -6,6 +6,14 @@
 
             <Table id="main_table_books" headerText="{i18n>main.tableHeader}" items="{/ZRAP_CV_BOOKS}"
                 growing="true" growingThreshold="200" alternateRowColors="true">
+                <headerToolbar>
+    <Toolbar id="main_table_toolbar">
+        <Title id="main_table_title" text="{i18n>main.tableHeader}" />
+        <ToolbarSpacer id="main_table_toolbarspacer" />
+        <Button id="main_table_createbutton" text="{i18n>main.createButton}" press="onCreatePressed" />
+    </Toolbar>
+</headerToolbar>
+
 	            <columns>
                     <Column id="main_column_isbn">
                         <Text id="main_text_isbn" text="{i18n>main.isbn}"/>

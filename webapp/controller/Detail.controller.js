@@ -1,56 +1,68 @@
 sap.ui.define([
-    "sap/ui/core/mvc/Controller"
+    "sap/ui/core/mvc/Controller",
+    "sap/ui/model/json/JSONModel",
+    "sap/m/MessageBox",
+    "sap/ui/core/routing/History"
 ],
-    /**
-     * @param {typeof sap.ui.core.mvc.Controller} Controller
-     */
-    function (Controller) {
+    function (Controller, JSONModel, MessageBox, History) {
         "use strict";
 
         return Controller.extend("at.clouddna.zsapui5withodatav4.controller.Detail", {
-            onInit: function() {
-                let oRouter = this.getOwnerComponent().getRouter(),
-                    oRoute = oRouter.getRoute("Detail");
-                oRoute.attachPatternMatched(this.onPatternMatched, this);
 
-                this.oEditModel = new sap.ui.model.json.JSONModel({
-                    editMode: false
+            aFragments: {},
+
+            onInit: function () {
+                this.getOwnerComponent().getRouter().getRoute("Detail").attachPatternMatched(this.onPatternMatched, this);
+                this.getOwnerComponent().getRouter().getRoute("Create").attachPatternMatched(this.onCreatePatternMatched, this);
+            },
+
+            onPatternMatched: function (oEvent) {
+                let oArguments = oEvent.getParameters().arguments,
+                    sPath = decodeURIComponent(oArguments.path);
+                this.getView().bindElement(sPath);
+                this.oEditModel = new JSONModel({
+                    editMode: false,
+                    create: false
                 });
-
                 this.getView().setModel(this.oEditModel, "editModel");
-
-                this.aFragments = {};
-
                 this._loadFragment("Display");
             },
 
-            onPatternMatched: function(oEvent) {
-                let oArguments = oEvent.getParameters().arguments,
-                    sPath = decodeURIComponent(oArguments.path);
+            onCreatePatternMatched: function (oEvent) {
+                let oModel = this.getView().getModel(),
+                    oListBinding = oModel.bindList("/ZRAP_CV_BOOKS"),
+                    oCreateContext = oListBinding.create();
 
-                this.getView().bindContext(sPath);
+                oCreateContext.created().then((oNewContext) => {
+                    this.getView().bindElement(this.oCreateContext.getPath());
+                });
+
+                this.oEditModel = new JSONModel({
+                    editMode: true,
+                    create: true
+                });
+                this.getView().setModel(this.oEditModel, "editModel");
+                this._loadFragment("Edit");
             },
 
-            onEditPressed: function(){
+
+            onEditPressed: function () {
                 this._onSwitchEdit();
             },
-
-            _onSwitchEdit: function(){
+            
+            _onSwitchEdit: function () {
                 let bNewMode = !this.oEditModel.getProperty("/editMode");
-
                 this.oEditModel.setProperty("/editMode", bNewMode);
-
                 this._loadFragment(bNewMode ? "Edit" : "Display");
             },
 
-            _loadFragment: function(sFragmentName){
+            _loadFragment: function (sFragmentName) {
                 this.getView().byId("page").removeAllContent();
-
-                if(this.aFragments[sFragmentName]){
+                if (this.aFragments[sFragmentName]) {
                     this.getView().byId("page").addContent(this.aFragments[sFragmentName]);
-                }else{
+                } else {
                     sap.ui.core.Fragment.load({
-                        id: sap.ui.core.Fragment.createId(this.getView().getId(),sFragmentName),
+                        id: sap.ui.core.Fragment.createId(this.getView().getId(), sFragmentName),
                         fragmentName: "at.clouddna.zsapui5withodatav4.view.fragment." + sFragmentName,
                         type: "XML",
                         controller: this
@@ -61,10 +73,11 @@ sap.ui.define([
                 }
             },
 
-            onSavePressed: function(){
+            onSavePressed: function () {
                 this.getView().getModel().submitBatch("$auto").then(
                     () => {
                         sap.m.MessageToast.show("Successfully saved!");
+                        this.getView().getModel().refresh();
                         this._onSwitchEdit();
                     },
                     () => {
@@ -73,21 +86,54 @@ sap.ui.define([
                 );
             },
 
-            onCancelPressed: function(){
+            onCancelPressed: function () {
                 this.getView().getModel().resetChanges();
                 this._onSwitchEdit();
             },
 
-            onEditToggled: function(oEvent){
+            onEditToggled: function (oEvent) {
                 let bNewMode = !this.oEditModel.getProperty("/editMode");
 
                 this.oEditModel.setProperty("/editMode", bNewMode);
 
-                if(!oEvent.getParameters().editable){
+                if (!oEvent.getParameters().editable) {
                     this.onCancelPressed();
+                }
+            },
+
+            onDeletePressed: function () {
+                let oBinding = this.getView().getElementBinding().getBoundContext(),
+                    i18nModel = this.getView().getModel("i18n"),
+                    oResourceBundle = i18nModel.getResourceBundle(),
+                    sText = oResourceBundle.getText("deleteQuestion");
+
+                MessageBox.confirm(sText, {
+                    actions: [MessageBox.Action.YES, MessageBox.Action.NO],
+                    emphasizedAction: MessageBox.Action.YES,
+                    onClose: (sAction) => {
+                        if (MessageBox.Action.YES === sAction) {
+                            oBinding.delete().then(() => {
+                                this.onNavBack();
+                            },
+                                (oError) => {
+                                    sap.m.MessageToast.show("An error occured!");
+                                }
+                            );
+                        }
+                    }
+                });
+            },
+
+            onNavBack: function () {
+                let oHistory = History.getInstance(),
+                    sPreviousHash = oHistory.getPreviousHash();
+                if (sPreviousHash !== undefined) {
+                    window.history.go(-1);
+                } else {
+                    let oRouter = this.getOwnerComponent().getRouter();
+                    oRouter.navTo("Main", {}, true);
                 }
             }
 
-            
         });
     });

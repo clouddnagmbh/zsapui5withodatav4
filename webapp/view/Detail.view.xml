@@ -5,23 +5,28 @@
     xmlns:core="sap.ui.core"
     xmlns="sap.m">
     <Page id="page" title="Detail View">
-    <customHeader>
-            <OverflowToolbar id="detail_toolbar_header">
-                <Title id="detail_title_header" text="Details"/>
-                <ToolbarSpacer id="detail_spacer_header"/>
-                <Button id="detail_button_edit" text="Edit" type="Emphasized" press="onEditPressed" visible="{= ${ReadingFinished} === false &amp;&amp;!${editModel>/editMode} }"/>
-            </OverflowToolbar>
-        </customHeader>
+<customHeader>
+    <OverflowToolbar id="detail_toolbar_header">
+        <Title id="detail_title_header" text="Details" />
+        <ToolbarSpacer id="detail_spacer_header" />
+        <Button id="detail_button_edit" text="Edit" type="Emphasized" press="onEditPressed" visible="{= !${editModel>/editMode}}"/>
+        <Button id="detail_button_delete" text="Delete" type="Reject" press="onDeletePressed" visible="{= !${editModel>/editMode}}"/>
+    </OverflowToolbar>
+</customHeader>
+
         <content>
         <!-- <core:Fragment id="detail_fragment_display" type="XML" fragmentName="at.clouddna.zsapui5withodatav4.view.fragment.Display"/> -->
         <!-- <core:Fragment id="detail_fragment_edit" type="XML" fragmentName="at.clouddna.zsapui5withodatav4.view.fragment.Edit"/> -->
         </content>
         <footer>
-            <OverflowToolbar id="detail_toolbar_footer" visible="{editModel>/editMode}">
-                <ToolbarSpacer id="detail_spacer_footer"/>
-                <Button id="detail_button_save" text="Save" press="onSavePressed" type="Accept"/>
-                <Button id="detail_button_cancel" text="Cancel" press="onCancelPressed" type="Reject"/>
-            </OverflowToolbar>
-        </footer>
+    <OverflowToolbar id="detail_toolbar_footer">
+        <ToolbarSpacer id="detail_spacer_footer" />
+<Button id="detail_button_save" text="Save" press="onSavePressed" type="Accept" visible="{editModel>/editMode}"/>
+<Button id="detail_button_cancel" text="Cancel" press="onCancelPressed" type="Reject" visible="{editModel>/editMode}"/>
+
+
+    </OverflowToolbar>
+</footer>
+
     </Page>
 </mvc:View>

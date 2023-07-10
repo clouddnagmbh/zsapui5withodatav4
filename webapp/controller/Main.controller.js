@@ -43,6 +43,13 @@ sap.ui.define([
                 oRouter.navTo("Detail", {
                     path: encodeURIComponent(sPath)
                 });
+            },
+
+            onCreatePressed: function() {
+                let oRouter = this.getOwnerComponent().getRouter();
+
+                oRouter.navTo("Create");
             }
+            
         });
     });

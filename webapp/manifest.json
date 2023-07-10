@@ -107,11 +107,18 @@
         },
         {
           "name": "Detail",
-          "pattern": "mandatoyParamDetail/{path}",
+          "pattern": "detail/{path}",
           "target": [
               "Detail"
           ]
-        }
+        },
+        {
+          "name": "Create",
+          "pattern": "create",
+          "target": [
+            "Detail"
+          ]
+}
       ],
       "targets": {
         "TargetMain": {
